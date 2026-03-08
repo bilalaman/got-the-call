@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@got_the_call Meme Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f0f0f0;
+    --card-bg: #e8e8e8;
+    --black: #000000;
+    --red: #cc0000;
+    --green: #00864e;
+    --border: rgba(0,0,0,0.08);
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Oswald', sans-serif;
+    color: var(--black);
+    padding: 0;
+    margin: 0;
+  }
+
+  .mono { font-family: 'Space Mono', monospace; }
+  .bebas { font-family: 'Bebas Neue', sans-serif; }
+
+  /* ===== HEADER ===== */
+  .app-header {
+    text-align: center;
+    padding: 40px 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .app-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 4px;
+    color: #000000;
+  }
+
+  .app-header p {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    cursor: pointer;
+    color: #999;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .tab:hover { color: #000000; }
+  .tab.active { color: #000000; border-bottom-color: #000000; }
+
+  /* ===== SECTION ===== */
+  .section { display: none; padding: 32px 20px; max-width: 1200px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+    text-align: center;
+    color: #000000;
+  }
+
+  /* ===== MEME GALLERY ===== */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  /* ===== MEME CARD (reusable for both gallery and preview) ===== */
+  .meme-card {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .meme-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .meme-card > * { position: relative; z-index: 1; }
+
+  /* Meme brand bar */
+  .meme-brand {
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .meme-brand-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--black);
+  }
+
+  .meme-brand-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #000000;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* Meme content area */
+  .meme-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 8% 5%;
+  }
+
+  .meme-emoji {
+    font-size: 56px;
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+
+  .meme-top-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #000000;
+    margin-bottom: 12px;
+    background: #f0f0f0;
+    padding: 6px 16px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .meme-main-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    line-height: 1.4;
+    color: var(--black);
+    max-width: 90%;
+    background: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .meme-main-text .highlight {
+    color: var(--red);
+  }
+
+  .meme-main-text .green {
+    color: var(--green);
+  }
+
+  .meme-sub-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #000000;
+    margin-top: 12px;
+    line-height: 1.5;
+    background: #f0f0f0;
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* Circular brand logo */
+  .meme-logo {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .meme-logo svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Meme footer */
+  .meme-footer {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .meme-footer-handle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #000000;
+    flex: 1;
+    text-align: left;
+  }
+
+  .meme-footer-cr {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #000000;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    flex: 1;
+    text-align: right;
+  }
+
+  /* Top-center watch logo */
+  .meme-clock {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 52px;
+    z-index: 2;
+  }
+
+  .meme-clock svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Meme type badge */
+  .meme-type-badge {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  .meme-type-badge.waiting {
+    background: rgba(204,0,0,0.06);
+    color: var(--red);
+    border: 1px solid rgba(204,0,0,0.15);
+  }
+
+  .meme-type-badge.gotit {
+    background: rgba(0,134,78,0.06);
+    color: var(--green);
+    border: 1px solid rgba(0,134,78,0.15);
+  }
+
+  /* Divider line inside meme */
+  .meme-divider {
+    width: 60px;
+    height: 1px;
+    background: rgba(0,0,0,0.1);
+    margin: 12px auto;
+  }
+
+  /* ===== GENERATOR ===== */
+  .generator-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (max-width: 800px) {
+    .generator-layout { grid-template-columns: 1fr; }
+  }
+
+  .generator-controls {
+    padding: 24px;
+    background: #dcdcdc;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .control-group {
+    margin-bottom: 24px;
+  }
+
+  .control-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .control-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--black);
+    outline: none;
+  }
+
+  .control-input:focus {
+    border-color: var(--black);
+  }
+
+  textarea.control-input {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  /* Template picker */
+  .template-picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .template-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    color: #666;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .template-btn:hover { border-color: var(--black); color: var(--black); }
+  .template-btn.active { border-color: var(--black); color: var(--black); background: var(--card-bg); font-weight: 700; }
+
+  /* Emoji picker */
+  .emoji-picker {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .emoji-btn {
+    font-size: 28px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+  }
+
+  .emoji-btn:hover { border-color: var(--black); transform: scale(1.1); }
+  .emoji-btn.active { border-color: var(--black); background: var(--card-bg); }
+
+  /* Preview area */
+  .preview-area {
+    position: sticky;
+    top: 20px;
+  }
+
+  .preview-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .preview-meme {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  /* Save hint */
+  .save-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #aaa;
+    text-align: center;
+    margin-top: 12px;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <h1>MEME GENERATOR</h1>
+  <p>@got_the_call · The Culture · The Wait · The Watch</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('gallery')">Ready-Made Memes</button>
+  <button class="tab" onclick="switchTab('generator')">Create Your Own</button>
+</div>
+
+<!-- ===== GALLERY SECTION ===== -->
+<div class="section active" id="gallery">
+  <div class="section-title bebas">SCREENSHOT · SAVE · SHARE</div>
+  <div class="gallery">
+
+    <!-- MEME 1: Waiting -->
+    <div class="meme-card">
+      <div class="meme-type-badge waiting mono">WAITLIST LIFE</div>
+      <div class="meme-content">
+        <div class="meme-emoji">📱</div>
+        <div class="meme-top-text mono">When your AD says</div>
+        <div class="meme-main-text bebas">"WE'LL CALL YOU<br>WHEN IT'S <span class="highlight">READY</span>"</div>
+        <div class="meme-divider"></div>
+        <div class="meme-sub-text mono">That was 3 years ago.<br>I've changed my number twice.</div>
+      </div>
+      <div class="meme-footer">
+        <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+        <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta1" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba1" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta1" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba1" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+        <span class="meme-footer-cr mono">The Wait Is Real</span>
+      </div>
+    </div>
+
+    <!-- MEME 2: Got the call -->
+    <div class="meme-card">
+      <div class="meme-type-badge gotit mono">GOT THE CALL</div>
+      <div class="meme-content">
+        <div class="meme-emoji">🏆</div>
+        <div class="meme-top-text mono">POV</div>
+        <div class="meme-main-text bebas">YOUR AD JUST CALLED.<br>IT'S A <span class="green">DAYTONA</span>.</div>
+        <div class="meme-divider"></div>
+        <div class="meme-sub-text mono">You're shaking. Your wife doesn't know yet.<br>The credit card does.</div>
+      </div>
+      <div class="meme-footer">
+        <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+        <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta2" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba2" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta2" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba2" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+        <span class="meme-footer-cr mono">Worth Every Second</span>
+      </div>
+    </div>
+
+    <!-- MEME 3: Waiting -->
+    <div class="meme-card">
+      <div class="meme-type-badge waiting mono">WAITLIST LIFE</div>
+      <div class="meme-content">
+        <div class="meme-emoji">💀</div>
+        <div class="meme-top-text mono">AD Purchase History</div>
+        <div class="meme-main-text bebas">2 DATE&shy;JUSTS<br>1 YACHT-MASTER<br>3 LADY DATE&shy;JUSTS<br><span class="highlight">0 SUBMARINERS</span></div>
+        <div class="meme-divider"></div>
+        <div class="meme-sub-text mono">My wife has more Rolexes than me<br>and she doesn't even like watches.</div>
+      </div>
+      <div class="meme-footer">
+        <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+        <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta3" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba3" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta3" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba3" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+        <span class="meme-footer-cr mono">Building The Relationship</span>
+      </div>
+    </div>
+
+    <!-- MEME 4: Got the call -->
+    <div class="meme-card">
+      <div class="meme-type-badge gotit mono">GOT THE CALL</div>
+      <div class="meme-content">
+        <div class="meme-emoji">😭</div>
+        <div class="meme-top-text mono">18 months on the list</div>
+        <div class="meme-main-text bebas">THE <span class="green">PEPSI</span> IS HERE.<br>I'M NOT CRYING.<br>YOU'RE CRYING.</div>
+        <div class="meme-divider"></div>
+        <div class="meme-sub-text mono">Called in sick to work.<br>Drove 2 hours to the AD.<br>No regrets.</div>
+      </div>
+      <div class="meme-footer">
+        <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+        <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta4" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba4" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta4" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba4" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+        <span class="meme-footer-cr mono">The Call Changes Everything</span>
+      </div>
+    </div>
+
+    <!-- MEME 5: Waiting -->
+    <div class="meme-card">
+      <div class="meme-type-badge waiting mono">WAITLIST LIFE</div>
+      <div class="meme-content">
+        <div class="meme-emoji">🤡</div>
+        <div class="meme-top-text mono">Me walking into the AD</div>
+        <div class="meme-main-text bebas">"JUST BROWSING"</div>
+        <div class="meme-divider"></div>
+        <div class="meme-sub-text mono">I am not just browsing.<br>I have been thinking about this<br>watch for 14 months straight.</div>
+      </div>
+      <div class="meme-footer">
+        <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+        <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta5" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba5" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta5" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba5" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+        <span class="meme-footer-cr mono">We All Know The Game</span>
+      </div>
+    </div>
+
+    <!-- MEME 6: Got the call -->
+    <div class="meme-card">
+      <div class="meme-type-badge gotit mono">GOT THE CALL</div>
+      <div class="meme-content">
+        <div class="meme-emoji">⌚</div>
+        <div class="meme-top-text mono">First 24 hours</div>
+        <div class="meme-main-text bebas">CHECKED THE TIME<br><span class="green">47 TIMES</span><br>ON MY NEW WATCH</div>
+        <div class="meme-divider"></div>
+        <div class="meme-sub-text mono">Not because I needed to know the time.<br>Because it's finally on my wrist.</div>
+      </div>
+      <div class="meme-footer">
+        <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+        <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta6" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba6" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta6" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba6" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+        <span class="meme-footer-cr mono">The Honeymoon Phase</span>
+      </div>
+    </div>
+
+    <!-- MEME 7: Waiting -->
+    <div class="meme-card">
+      <div class="meme-type-badge waiting mono">WAITLIST LIFE</div>
+      <div class="meme-content">
+        <div class="meme-emoji">📞</div>
+        <div class="meme-top-text mono">Every time my phone rings</div>
+        <div class="meme-main-text bebas">IS IT <span class="highlight">THE CALL</span>?</div>
+        <div class="meme-divider"></div>
+        <div class="meme-sub-text mono">It was a spam caller.<br>Again.<br>My disappointment is immeasurable.</div>
+      </div>
+      <div class="meme-footer">
+        <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+        <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta7" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba7" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta7" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba7" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+        <span class="meme-footer-cr mono">Still Waiting</span>
+      </div>
+    </div>
+
+    <!-- MEME 8: Got the call -->
+    <div class="meme-card">
+      <div class="meme-type-badge gotit mono">GOT THE CALL</div>
+      <div class="meme-content">
+        <div class="meme-emoji">🫡</div>
+        <div class="meme-top-text mono">To everyone still waiting</div>
+        <div class="meme-main-text bebas">YOUR TIME<br>IS <span class="green">COMING</span>.</div>
+        <div class="meme-divider"></div>
+        <div class="meme-sub-text mono">I waited 26 months for my Batman.<br>It sits on my wrist right now.<br>Stay patient. Stay ready.</div>
+      </div>
+      <div class="meme-footer">
+        <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+        <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta8" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba8" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta8" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba8" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+        <span class="meme-footer-cr mono">We're All In This Together</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== GENERATOR SECTION ===== -->
+<div class="section" id="generator">
+  <div class="generator-layout">
+
+    <!-- CONTROLS -->
+    <div class="generator-controls">
+      <div class="control-group">
+        <label class="control-label">Template</label>
+        <div class="template-picker">
+          <button class="template-btn active" onclick="setTemplate('waiting')">⏳ Waiting for the Call</button>
+          <button class="template-btn" onclick="setTemplate('gotit')">🎉 Got the Call</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Emoji</label>
+        <div class="emoji-picker">
+          <button class="emoji-btn active" onclick="setEmoji('📱')">📱</button>
+          <button class="emoji-btn" onclick="setEmoji('📞')">📞</button>
+          <button class="emoji-btn" onclick="setEmoji('💀')">💀</button>
+          <button class="emoji-btn" onclick="setEmoji('🤡')">🤡</button>
+          <button class="emoji-btn" onclick="setEmoji('😤')">😤</button>
+          <button class="emoji-btn" onclick="setEmoji('😭')">😭</button>
+          <button class="emoji-btn" onclick="setEmoji('🏆')">🏆</button>
+          <button class="emoji-btn" onclick="setEmoji('⌚')">⌚</button>
+          <button class="emoji-btn" onclick="setEmoji('🫡')">🫡</button>
+          <button class="emoji-btn" onclick="setEmoji('🔥')">🔥</button>
+          <button class="emoji-btn" onclick="setEmoji('👑')">👑</button>
+          <button class="emoji-btn" onclick="setEmoji('🥂')">🥂</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Top Label</label>
+        <input class="control-input mono" type="text" id="topText" placeholder="e.g. When your AD says..." value="When your AD says" oninput="updatePreview()">
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Main Text (use * for highlight)</label>
+        <textarea class="control-input mono" id="mainText" placeholder='e.g. THE *DAYTONA* IS MINE' oninput="updatePreview()">THE *DAYTONA* IS MINE</textarea>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Bottom Text</label>
+        <textarea class="control-input mono" id="subText" placeholder="e.g. Worth every second of the wait." oninput="updatePreview()">Worth every second of the wait.</textarea>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Footer Tag</label>
+        <input class="control-input mono" type="text" id="footerTag" placeholder="e.g. The Wait Is Over" value="The Wait Is Over" oninput="updatePreview()">
+      </div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-area">
+      <div class="preview-label mono">LIVE PREVIEW</div>
+      <div class="preview-meme">
+        <div class="meme-card" id="previewCard">
+          <div class="meme-type-badge waiting mono" id="previewBadge">WAITLIST LIFE</div>
+      <div class="meme-content">
+            <div class="meme-emoji" id="previewEmoji">📱</div>
+            <div class="meme-top-text mono" id="previewTop">When your AD says</div>
+            <div class="meme-main-text bebas" id="previewMain">THE <span class="highlight">DAYTONA</span> IS MINE</div>
+            <div class="meme-divider"></div>
+            <div class="meme-sub-text mono" id="previewSub">Worth every second of the wait.</div>
+          </div>
+          <div class="meme-footer">
+            <span class="meme-footer-handle bebas">@GOT_THE_CALL</span>
+            <div class="meme-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#006039" stroke="#006039" stroke-width="1.5"/><defs><path id="ta9" d="M15,50 a35,35 0 1,1 70,0"/><path id="ba9" d="M85,50 a35,35 0 1,1 -70,0"/></defs><text font-family="Space Mono, monospace" font-size="8.5" fill="#ffffff" letter-spacing="2.5"><textPath href="#ta9" startOffset="50%" text-anchor="middle">ROLEX CULTURE</textPath></text><text font-family="Space Mono, monospace" font-size="7" fill="#ffffff" letter-spacing="2"><textPath href="#ba9" startOffset="50%" text-anchor="middle">GOT THE CALL</textPath></text><text x="50" y="56" text-anchor="middle" font-size="22">👑</text></svg></div>
+            <span class="meme-footer-cr mono" id="previewFooterTag">The Wait Is Over</span>
+          </div>
+        </div>
+      </div>
+      <div class="save-hint mono">Screenshot to save · Share to your story</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let currentTemplate = 'waiting';
+  let currentEmoji = '📱';
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function setTemplate(type) {
+    currentTemplate = type;
+    document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    updatePreview();
+  }
+
+  function setEmoji(emoji) {
+    currentEmoji = emoji;
+    document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    updatePreview();
+  }
+
+  function updatePreview() {
+    const badge = document.getElementById('previewBadge');
+    const emoji = document.getElementById('previewEmoji');
+    const top = document.getElementById('previewTop');
+    const main = document.getElementById('previewMain');
+    const sub = document.getElementById('previewSub');
+    const footerTag = document.getElementById('previewFooterTag');
+
+    // Badge
+    if (currentTemplate === 'waiting') {
+      badge.textContent = 'WAITLIST LIFE';
+      badge.className = 'meme-type-badge waiting mono';
+    } else {
+      badge.textContent = 'GOT THE CALL';
+      badge.className = 'meme-type-badge gotit mono';
+    }
+
+    // Emoji
+    emoji.textContent = currentEmoji;
+
+    // Top text
+    top.textContent = document.getElementById('topText').value || '';
+
+    // Main text — convert *text* to highlighted spans
+    const mainVal = document.getElementById('mainText').value || '';
+    const highlightClass = currentTemplate === 'waiting' ? 'highlight' : 'green';
+    const processed = mainVal.replace(/\*([^*]+)\*/g, `<span class="${highlightClass}">$1</span>`);
+    main.innerHTML = processed.replace(/\n/g, '<br>');
+
+    // Sub text
+    const subVal = document.getElementById('subText').value || '';
+    sub.innerHTML = subVal.replace(/\n/g, '<br>');
+
+    // Footer tag
+    footerTag.textContent = document.getElementById('footerTag').value || '';
+  }
+</script>
+
+</body>
+</html>
