@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Got The Call | Watch Humor & Culture</title>
+<meta name="description" content="Watch humor, horology culture, and the AD experience — told through memes, market takes, and real talk. 14M+ reel views. Follow @got_the_call.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── Dark Theme (default) ── */
+  [data-theme="dark"] {
+    --bg: #0a0a0a;
+    --card: #161616;
+    --card-hover: #1c1c1c;
+    --gold: #c9a96e;
+    --gold-light: #dfc08a;
+    --gold-dim: rgba(201, 169, 110, 0.15);
+    --text: #f2ece0;
+    --text-dim: rgba(242, 236, 224, 0.7);
+    --muted: #6b6b6b;
+    --border: rgba(255,255,255,0.06);
+    --cta-text: #0a0a0a;
+    --toggle-bg: rgba(255,255,255,0.08);
+    --toggle-hover: rgba(255,255,255,0.14);
+    --glow-alpha: 0.2;
+  }
+
+  /* ── Light Theme ── */
+  [data-theme="light"] {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --card-hover: #f0ede6;
+    --gold: #a07d3a;
+    --gold-light: #8b6e2e;
+    --gold-dim: rgba(160, 125, 58, 0.12);
+    --text: #1a1a1a;
+    --text-dim: rgba(26, 26, 26, 0.6);
+    --muted: #7a7a7a;
+    --border: rgba(0,0,0,0.08);
+    --cta-text: #ffffff;
+    --toggle-bg: rgba(0,0,0,0.06);
+    --toggle-hover: rgba(0,0,0,0.1);
+    --glow-alpha: 0.12;
+  }
+
+  :root {
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+
+  /* ── Grain overlay ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+  [data-theme="dark"] body::after { opacity: 1; }
+  [data-theme="light"] body::after { opacity: 0.4; }
+
+  /* ── Dark/Light Toggle ── */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--toggle-bg);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .theme-toggle:hover {
+    background: var(--toggle-hover);
+    transform: scale(1.08);
+  }
+  .theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text);
+    transition: color 0.3s ease;
+  }
+  .theme-toggle .icon-sun { display: none; }
+  .theme-toggle .icon-moon { display: block; }
+  [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+  [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+  /* ── Utility ── */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Fade-in animations ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Hero ── */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 50px 24px 30px;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── Watch Logo ── */
+  .watch-logo-wrap {
+    position: relative;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeDown 1.2s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .watch-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(201,169,110,var(--glow-alpha)) 0%, rgba(201,169,110,0.05) 40%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+  .watch-logo-wrap svg {
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 4px 24px rgba(201,169,110,0.2));
+  }
+
+  .hero-title {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(26px, 7vw, 40px);
+    letter-spacing: 14px;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeUp 1s 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-tagline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+    opacity: 0;
+    animation: fadeUp 1s 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-sub {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text-dim);
+    max-width: 440px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gold);
+    color: var(--cta-text);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-cta:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201, 169, 110, 0.25);
+  }
+  .hero-cta svg { transition: transform 0.3s ease; }
+  .hero-cta:hover svg { transform: translateX(3px); }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 22px 0;
+    transition: border-color 0.4s ease;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    gap: 20px;
+  }
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Section styling ── */
+  section { padding: 32px 0; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 38px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  /* ── Pillars ── */
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .pillar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 24px 16px;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .pillar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+  .pillar:hover { background: var(--card-hover); transform: translateY(-4px); }
+  .pillar:hover::before { transform: scaleX(1); }
+  .pillar-emoji { font-size: 28px; margin-bottom: 14px; display: block; }
+  .pillar-title { font-weight: 600; font-size: 14px; letter-spacing: 0.5px; color: var(--text); }
+
+  /* ── Reel cards ── */
+  .reel-list { display: flex; flex-direction: column; gap: 8px; }
+  .reel-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    transition: all 0.35s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .reel-card::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    transform: scaleY(0);
+    transition: transform 0.35s ease;
+  }
+  .reel-card:hover {
+    background: var(--card-hover);
+    border-color: var(--gold-dim);
+    transform: translateX(4px);
+  }
+  .reel-card:hover::after { transform: scaleY(1); }
+  .reel-rank {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold-dim);
+    width: 36px;
+    text-align: center;
+  }
+  .reel-info { min-width: 0; }
+  .reel-title {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .reel-views { font-family: var(--font-mono); font-size: 12px; color: var(--gold); }
+  .reel-arrow { color: var(--muted); transition: all 0.3s ease; flex-shrink: 0; }
+  .reel-card:hover .reel-arrow { color: var(--gold); transform: translateX(3px); }
+
+  /* ── Feed grid ── */
+  .feed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .feed-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 18px 16px;
+    transition: all 0.35s ease;
+  }
+  .feed-item:hover { background: var(--card-hover); transform: translateY(-2px); }
+  .feed-emoji { font-size: 22px; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+  .feed-text { font-size: 14px; line-height: 1.5; color: var(--text-dim); }
+  .feed-text strong { color: var(--text); font-weight: 600; }
+
+  /* ── Bottom CTA ── */
+  .bottom-cta { text-align: center; padding: 32px 24px 28px; position: relative; }
+  .bottom-cta::before {
+    content: '';
+    position: absolute;
+    bottom: 30%; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,169,110,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-number {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 10vw, 72px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .cta-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .cta-phrase {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-bottom: 22px;
+    line-height: 1.4;
+  }
+  .btn-follow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-follow:hover {
+    background: var(--gold);
+    color: var(--cta-text);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201, 169, 110, 0.2);
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    transition: border-color 0.4s ease;
+  }
+  .footer-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .divider { width: 40px; height: 1px; background: var(--gold); margin: 0 auto 20px; opacity: 0.4; }
+
+  /* ── W&W Countdown ── */
+  .ww-card, .rolex-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 22px 20px;
+    text-align: center;
+    transition: all 0.4s ease;
+  }
+  .ww-countdown { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; }
+  .ww-box { background: var(--bg); border-radius: 9px; padding: 10px 14px; min-width: 58px; text-align: center; }
+  .ww-box-num { font-family: var(--font-mono); font-size: 22px; font-weight: 500; color: var(--gold); }
+  .ww-box-label { font-size: 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .ww-tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  .ww-tag { font-size: 10px; padding: 4px 10px; border-radius: 100px; }
+  .ww-tag.gold { border: 1px solid var(--gold-dim); color: var(--gold); }
+  .ww-tag.muted { border: 1px solid var(--border); color: var(--muted); }
+
+  /* ── Rolex Market ── */
+  .rolex-card { text-align: left; }
+  .rolex-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .refresh-btn { background: var(--bg); border: 1px solid var(--border); color: var(--gold); font-size: 11px; padding: 5px 12px; border-radius: 100px; cursor: pointer; font-family: var(--font-body); transition: all 0.2s; }
+  .refresh-btn:hover { border-color: var(--gold); }
+  .rolex-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .rolex-watch { flex: 1; min-width: 120px; text-align: left; padding: 14px; background: var(--bg); border-radius: 9px; }
+  .rolex-ref { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .rolex-price { font-family: var(--font-mono); font-size: 20px; font-weight: 500; color: var(--text); }
+  .rolex-change { font-size: 10px; margin-top: 3px; }
+  .rolex-change.down { color: #e85d5d; }
+  .rolex-change.up { color: #5ecc7b; }
+  .rolex-change.hot { color: var(--gold); }
+  .rolex-retail { font-size: 9px; color: var(--muted); margin-top: 2px; }
+  .rolex-news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .rolex-news-item { display: block; padding: 10px 12px; background: var(--bg); border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+  .rolex-news-item:hover { background: var(--card-hover); }
+  .rolex-news-title { font-size: 12px; color: var(--text); line-height: 1.4; margin-bottom: 4px; }
+  .rolex-news-time { font-size: 9px; color: var(--muted); font-family: var(--font-mono); }
+  .rolex-footer { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+
+  /* ── Horology News Feed ── */
+  .news-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 22px 20px;
+    transition: all 0.4s ease;
+  }
+  .news-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .news-tabs { display: flex; gap: 6px; }
+  .news-tab {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .news-tab.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+  .news-tab:hover { border-color: var(--gold); }
+  .news-list { display: flex; flex-direction: column; gap: 8px; }
+  .news-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .news-item:hover { background: var(--card-hover); }
+  .news-item-title { font-size: 13px; color: var(--text); line-height: 1.4; flex: 1; }
+  .news-item-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+  .news-item-source {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--gold-dim);
+    color: var(--gold);
+  }
+  .news-item-time { font-size: 9px; color: var(--muted); font-family: var(--font-mono); }
+  .news-footer { margin-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+
+  /* ── Keyframes ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+  @keyframes glowPulse { 0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } }
+
+  /* ── Mobile ── */
+  @media (max-width: 600px) {
+    .pillars { grid-template-columns: 1fr; gap: 10px; }
+    .pillar { padding: 24px 20px; display: flex; align-items: center; gap: 14px; text-align: left; }
+    .pillar-emoji { margin-bottom: 0; font-size: 24px; }
+    .feed-grid { grid-template-columns: 1fr; }
+    .reel-card { grid-template-columns: 1fr auto; gap: 12px; padding: 16px 20px; }
+    .reel-rank { display: none; }
+    .stats-grid { gap: 10px; }
+    section { padding: 24px 0; }
+    .hero { padding: 36px 24px 20px; }
+    .theme-toggle { top: 14px; right: 14px; width: 38px; height: 38px; }
+    .rolex-news-grid { grid-template-columns: 1fr; }
+    .rolex-watch { min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ DARK/LIGHT TOGGLE ═══ -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+</button>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="watch-logo-wrap">
+    <div class="watch-glow"></div>
+    <svg width="140" height="140" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="92" fill="none" stroke="#c9a96e" stroke-width="6"/>
+      <circle cx="100" cy="100" r="86" fill="none" stroke="#b8944f" stroke-width="2"/>
+      <rect x="186" y="92" width="14" height="16" rx="3" fill="#c9a96e"/>
+      <circle cx="100" cy="100" r="82" fill="#1a6b3c"/>
+      <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(201,169,110,0.15)" stroke-width="0.5"/>
+      <rect x="97" y="24" width="6" height="16" rx="1" fill="#c9a96e"/>
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(30 100 100)"/>
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(60 100 100)"/>
+      <rect x="97" y="24" width="6" height="16" rx="1" fill="#c9a96e" transform="rotate(90 100 100)"/>
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(120 100 100)"/>
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(150 100 100)"/>
+      <rect x="97" y="24" width="6" height="16" rx="1" fill="#c9a96e" transform="rotate(180 100 100)"/>
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(210 100 100)"/>
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(240 100 100)"/>
+      <rect x="97" y="24" width="6" height="16" rx="1" fill="#c9a96e" transform="rotate(270 100 100)"/>
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(300 100 100)"/>
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(330 100 100)"/>
+      <line x1="100" y1="100" x2="72" y2="52" stroke="#f2ece0" stroke-width="5" stroke-linecap="round"/>
+      <line x1="100" y1="100" x2="130" y2="48" stroke="#f2ece0" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="100" cy="100" r="5" fill="#c9a96e"/>
+      <circle cx="100" cy="100" r="2.5" fill="#f2ece0"/>
+    </svg>
+  </div>
+  <h1 class="hero-title">Got The Call</h1>
+  <div class="hero-eyebrow">Rolex · Timepieces · Horology</div>
+  <div class="hero-tagline">Watch Humor & Horology Culture</div>
+  <p class="hero-sub">The anticipation, the AD relationship, and the feeling when your phone finally rings — told through memes, humor, and real talk.</p>
+  <a href="https://www.instagram.com/got_the_call/" target="_blank" class="hero-cta">
+    Follow @got_the_call
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-bar reveal">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-number">14M+</div><div class="stat-label">Reel Views</div></div>
+      <div class="stat"><div class="stat-number">400K+</div><div class="stat-label">Monthly Reach</div></div>
+      <div class="stat"><div class="stat-number">9K+</div><div class="stat-label">Community</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WATCHES & WONDERS COUNTDOWN ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="ww-card">
+      <div class="section-label" style="text-align:center;">⌚ Watches & Wonders 2026</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Geneva · April 14-20, 2026</div>
+      <div id="ww-countdown" class="ww-countdown"></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">66 brands · Rolex · Patek · AP · Cartier</div>
+      <div class="ww-tags">
+        <span class="ww-tag gold">Public: Apr 18-20</span>
+        <span class="ww-tag muted">Trade: Apr 14-17</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ROLEX SECONDARY MARKET ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="rolex-card">
+      <div class="rolex-header">
+        <div class="section-label" style="margin-bottom:0;">👑 Rolex Secondary Market</div>
+        <button id="rolex-refresh" class="refresh-btn" onclick="loadRolex()">↻ Refresh</button>
+      </div>
+      <div class="rolex-grid">
+        <div class="rolex-watch">
+          <div class="rolex-ref">Daytona 116500LN</div>
+          <div class="rolex-price">$26,800</div>
+          <div class="rolex-change down">▼ 4.2% vs 6mo ago</div>
+          <div class="rolex-retail">Retail: $15,100</div>
+        </div>
+        <div class="rolex-watch">
+          <div class="rolex-ref">GMT Pepsi 126710BLRO</div>
+          <div class="rolex-price">$18,500</div>
+          <div class="rolex-change up">▲ 2.1% vs 6mo ago</div>
+          <div class="rolex-retail">Retail: $11,300</div>
+        </div>
+        <div class="rolex-watch">
+          <div class="rolex-ref">Submariner 124060</div>
+          <div class="rolex-price">$10,200</div>
+          <div class="rolex-change down">▼ 1.8% vs 6mo ago</div>
+          <div class="rolex-retail">Retail: $9,100</div>
+        </div>
+        <div class="rolex-watch">
+          <div class="rolex-ref">Sky-Dweller 326934</div>
+          <div class="rolex-price">$22,400</div>
+          <div class="rolex-change up">▲ 5.6% vs 6mo ago</div>
+          <div class="rolex-retail">Retail: $15,850</div>
+        </div>
+        <div class="rolex-watch">
+          <div class="rolex-ref">Land-Dweller 127334</div>
+          <div class="rolex-price">$34,000</div>
+          <div class="rolex-change hot">🔥 2.6x retail</div>
+          <div class="rolex-retail">Retail: $13,050</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Market Headlines</div>
+      <div id="rolex-feed" class="rolex-news-grid">
+        <div style="grid-column:span 3;font-size:12px;color:var(--muted);padding:10px 12px;background:var(--bg);border-radius:8px;">Click refresh for latest...</div>
+      </div>
+      <div class="rolex-footer">
+        <span style="font-size:11px;color:var(--muted);">Prices approx · Mar 2026</span>
+        <a href="https://watchcharts.com/watches/brand/rolex" target="_blank" rel="noopener" style="font-size:11px;color:var(--gold);text-decoration:none;">WatchCharts →</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <span id="rolex-status" style="font-size:10px;color:#5ecc7b;"></span>
+        <span id="rolex-news-ts" style="font-size:10px;color:var(--muted);">News: click refresh</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOROLOGY NEWS ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="news-card">
+      <div class="news-header">
+        <div class="section-label" style="margin-bottom:0;">📰 Horology News</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="news-tabs">
+            <button class="news-tab active" onclick="filterNews('all',this)">All</button>
+            <button class="news-tab" onclick="filterNews('hodinkee',this)">Hodinkee</button>
+            <button class="news-tab" onclick="filterNews('fratello',this)">Fratello</button>
+          </div>
+          <button id="news-refresh" class="refresh-btn" onclick="loadHorologyNews()">↻ Refresh</button>
+        </div>
+      </div>
+      <div id="horology-feed" class="news-list">
+        <div class="news-item" style="justify-content:center;"><span style="font-size:12px;color:var(--muted);">Click refresh to load latest articles...</span></div>
+      </div>
+      <div class="news-footer">
+        <span id="news-status" style="font-size:10px;color:var(--muted);"></span>
+        <div style="display:flex;gap:12px;">
+          <a href="https://www.hodinkee.com" target="_blank" rel="noopener" style="font-size:10px;color:var(--gold);text-decoration:none;">Hodinkee →</a>
+          <a href="https://www.fratellowatches.com" target="_blank" rel="noopener" style="font-size:10px;color:var(--gold);text-decoration:none;">Fratello →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY FOLLOW ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="section-label">Why People Follow</div>
+    <div class="section-title">Three reasons your<br>feed needs this.</div>
+    <div class="pillars">
+      <div class="pillar"><span class="pillar-emoji">😂</span><span class="pillar-title">Watch Humor</span></div>
+      <div class="pillar"><span class="pillar-emoji">🤯</span><span class="pillar-title">Market Takes</span></div>
+      <div class="pillar"><span class="pillar-emoji">🫡</span><span class="pillar-title">AD Culture</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MOST WATCHED ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="section-label">Most Watched</div>
+    <div class="section-title">The reels that broke<br>the algorithm.</div>
+    <div class="reel-list">
+      <a href="https://www.instagram.com/reel/DHaPwZwOcdE/?igsh=Ymg4cng0bDI4MXZt" target="_blank" class="reel-card">
+        <div class="reel-rank">1</div>
+        <div class="reel-info"><div class="reel-title">People Who Bought the Hulk for 30K in 2021</div><div class="reel-views">8.5M views</div></div>
+        <svg class="reel-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+      <a href="https://www.instagram.com/reel/C6BjKLuOy2q/?igsh=MXJwcnB6NjFtcHo5eg==" target="_blank" class="reel-card">
+        <div class="reel-rank">2</div>
+        <div class="reel-info"><div class="reel-title">Rolex Will Be in Stock — Watch Market is Dead</div><div class="reel-views">2.4M views</div></div>
+        <svg class="reel-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+      <a href="https://www.instagram.com/reel/DEIFW-yOK4j/?igsh=Y3VoenZ0NXVyYXho" target="_blank" class="reel-card">
+        <div class="reel-rank">3</div>
+        <div class="reel-info"><div class="reel-title">POV: Passing Business Class Wearing a Sub to Economy</div><div class="reel-views">1.9M views</div></div>
+        <svg class="reel-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+      <a href="https://www.instagram.com/reel/DEGnceCuA1_/?igsh=Mm12YjUweHF3enAy" target="_blank" class="reel-card">
+        <div class="reel-rank">4</div>
+        <div class="reel-info"><div class="reel-title">They Laughed When I Asked for a Pepsi</div><div class="reel-views">1.9M views</div></div>
+        <svg class="reel-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ IN YOUR FEED ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="section-label">What to Expect</div>
+    <div class="section-title">What you'll see<br>in your feed.</div>
+    <div class="feed-grid">
+      <div class="feed-item"><span class="feed-emoji">🗣️</span><div class="feed-text"><strong>POV memes</strong> every watch person relates to</div></div>
+      <div class="feed-item"><span class="feed-emoji">📊</span><div class="feed-text"><strong>Market hot takes</strong> on prices & new releases</div></div>
+      <div class="feed-item"><span class="feed-emoji">🏪</span><div class="feed-text"><strong>AD relationship</strong> humor & real talk</div></div>
+      <div class="feed-item"><span class="feed-emoji">🦁</span><div class="feed-text"><strong>"Men With…"</strong> series — viral watch stereotypes</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOTTOM CTA ═══ -->
+<section class="bottom-cta reveal">
+  <div class="container">
+    <div class="cta-number">9,000+</div>
+    <div class="cta-label">Watch Enthusiasts Who Get It</div>
+    <div class="divider"></div>
+    <div class="cta-phrase">Your AD won't call you,<br>but we will.</div>
+    <a href="https://www.instagram.com/got_the_call/" target="_blank" class="btn-follow">
+      Follow on Instagram
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div id="visitor-count" style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:10px;letter-spacing:1px;">...</div>
+  <div class="footer-text">Got The Call © 2026</div>
+</footer>
+
+<script>
+// ── Theme Toggle ──
+const toggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+const saved = localStorage.getItem('gtc-theme');
+if (saved) html.setAttribute('data-theme', saved);
+
+toggle.addEventListener('click', () => {
+  const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('gtc-theme', next);
+});
+
+// ── Scroll reveals ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const children = entry.target.querySelectorAll('.pillar, .reel-card, .feed-item, .stat');
+      if (children.length > 0) {
+        children.forEach((child, j) => {
+          child.style.opacity = '0';
+          child.style.transform = 'translateY(20px)';
+          child.style.transition = `opacity 0.6s ${j * 0.1}s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s ${j * 0.1}s cubic-bezier(0.16, 1, 0.3, 1)`;
+          setTimeout(() => { child.style.opacity = '1'; child.style.transform = 'translateY(0)'; }, 50);
+        });
+      }
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── W&W Countdown ──
+function updateWWCountdown(){
+  var target=new Date('2026-04-14T08:30:00+02:00');
+  var now=new Date();
+  var diff=target-now;
+  var el=document.getElementById('ww-countdown');
+  if(diff<=0){el.innerHTML='<div style="font-size:18px;color:var(--gold);font-weight:600;">It\u2019s happening NOW!</div>';return;}
+  var days=Math.floor(diff/86400000);
+  var hours=Math.floor((diff%86400000)/3600000);
+  var mins=Math.floor((diff%3600000)/60000);
+  var secs=Math.floor((diff%60000)/1000);
+  function box(v,l){return '<div class="ww-box"><div class="ww-box-num">'+v+'</div><div class="ww-box-label">'+l+'</div></div>';}
+  el.innerHTML=box(days,'Days')+box(hours,'Hrs')+box(mins,'Min')+box(secs,'Sec');
+}
+updateWWCountdown();
+setInterval(updateWWCountdown,1000);
+
+// ── Helpers ──
+function timeAgo(d){
+  var s=Math.floor((new Date()-d)/1000);
+  if(s<60)return 'just now';
+  var m=Math.floor(s/60);if(m<60)return m+'m ago';
+  var h=Math.floor(m/60);if(h<24)return h+'h ago';
+  return Math.floor(h/24)+'d ago';
+}
+function cleanTitle(t){return t.replace(/ - [^-]+$/,'').trim();}
+
+// ── RSS Proxy ──
+var PROXIES=[
+  'https://corsproxy.io/?url=',
+  'https://api.allorigins.win/raw?url=',
+  'https://api.codetabs.com/v1/proxy?quest='
+];
+function parseRSS(xmlText){
+  var parser=new DOMParser();
+  var doc=parser.parseFromString(xmlText,'text/xml');
+  var items=doc.querySelectorAll('item');
+  var results=[];
+  for(var i=0;i<items.length;i++){
+    var title=items[i].querySelector('title');
+    var link=items[i].querySelector('link');
+    var pubDate=items[i].querySelector('pubDate');
+    if(title)results.push({title:cleanTitle(title.textContent),link:link?link.textContent:'#',pubDate:pubDate?new Date(pubDate.textContent):new Date()});
+  }
+  return results;
+}
+function fetchViaProxy(rssUrl,onSuccess,onFail,proxyIdx){
+  proxyIdx=proxyIdx||0;
+  if(proxyIdx>=PROXIES.length){if(onFail)onFail();return;}
+  var x=new XMLHttpRequest();
+  x.open('GET',PROXIES[proxyIdx]+encodeURIComponent(rssUrl),true);
+  x.timeout=8000;
+  x.onload=function(){
+    if(x.status===200&&x.responseText.length>100){
+      var items=parseRSS(x.responseText);
+      if(items.length>0){onSuccess(items);return;}
+    }
+    fetchViaProxy(rssUrl,onSuccess,onFail,proxyIdx+1);
+  };
+  x.onerror=x.ontimeout=function(){fetchViaProxy(rssUrl,onSuccess,onFail,proxyIdx+1);};
+  x.send();
+}
+
+// ── Rolex Market News ──
+function loadRolex(){
+  var btn=document.getElementById('rolex-refresh'),st=document.getElementById('rolex-status'),feed=document.getElementById('rolex-feed');
+  btn.textContent='\u21BB Loading...';btn.style.opacity='0.5';
+  fetchViaProxy('https://news.google.com/rss/search?q=Rolex+watch+market+price&hl=en-US&gl=US&ceid=US:en',
+    function(items){
+      btn.textContent='\u21BB Refresh';btn.style.opacity='1';
+      var html='',top=items.slice(0,6);
+      for(var i=0;i<top.length;i++){
+        var ago=timeAgo(top[i].pubDate);
+        html+='<a href="'+top[i].link+'" target="_blank" rel="noopener" class="rolex-news-item"><div class="rolex-news-title">'+top[i].title+'</div><div class="rolex-news-time">'+ago+'</div></a>';
+      }
+      feed.innerHTML=html;
+      var rts=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+      st.textContent='\u2022 Live';st.style.color='#5ecc7b';
+      document.getElementById('rolex-news-ts').textContent='News updated '+rts;document.getElementById('rolex-news-ts').style.color='#5ecc7b';
+    },
+    function(){
+      btn.textContent='\u21BB Refresh';btn.style.opacity='1';
+      feed.innerHTML='<div style="grid-column:span 3;padding:10px 12px;background:var(--bg);border-radius:8px;font-size:12px;color:#e85d5d;">Failed \u2014 click refresh</div>';
+      st.textContent='Error';st.style.color='#e85d5d';
+    }
+  );
+}
+
+// ── Horology News (Hodinkee + Fratello) ──
+var allHorologyNews=[];
+var currentFilter='all';
+
+function loadHorologyNews(){
+  var btn=document.getElementById('news-refresh'),st=document.getElementById('news-status'),feed=document.getElementById('horology-feed');
+  btn.textContent='\u21BB Loading...';btn.style.opacity='0.5';
+  allHorologyNews=[];
+  var loaded=0,total=2;
+
+  function checkDone(){
+    loaded++;
+    if(loaded<total)return;
+    btn.textContent='\u21BB Refresh';btn.style.opacity='1';
+    if(allHorologyNews.length===0){
+      feed.innerHTML='<div class="news-item" style="justify-content:center;"><span style="font-size:12px;color:#e85d5d;">Failed to load \u2014 try again</span></div>';
+      st.textContent='Error';st.style.color='#e85d5d';
+      return;
+    }
+    allHorologyNews.sort(function(a,b){return b.pubDate-a.pubDate;});
+    renderNews();
+    var rts=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+    st.textContent='\u2022 '+allHorologyNews.length+' articles \u00B7 Updated '+rts;st.style.color='#5ecc7b';
+  }
+
+  fetchViaProxy('https://www.hodinkee.com/articles/rss.xml',
+    function(items){
+      for(var i=0;i<items.length;i++){items[i].source='Hodinkee';}
+      allHorologyNews=allHorologyNews.concat(items.slice(0,8));
+      checkDone();
+    },
+    function(){checkDone();}
+  );
+
+  fetchViaProxy('https://www.fratellowatches.com/feed/',
+    function(items){
+      for(var i=0;i<items.length;i++){items[i].source='Fratello';}
+      allHorologyNews=allHorologyNews.concat(items.slice(0,8));
+      checkDone();
+    },
+    function(){checkDone();}
+  );
+}
+
+function renderNews(){
+  var feed=document.getElementById('horology-feed');
+  var filtered=currentFilter==='all'?allHorologyNews:allHorologyNews.filter(function(n){return n.source.toLowerCase()===currentFilter;});
+  var top=filtered.slice(0,10);
+  if(top.length===0){feed.innerHTML='<div class="news-item" style="justify-content:center;"><span style="font-size:12px;color:var(--muted);">No articles from this source</span></div>';return;}
+  var html='';
+  for(var i=0;i<top.length;i++){
+    var ago=timeAgo(top[i].pubDate);
+    html+='<a href="'+top[i].link+'" target="_blank" rel="noopener" class="news-item">'
+      +'<span class="news-item-title">'+top[i].title+'</span>'
+      +'<span class="news-item-meta"><span class="news-item-source">'+top[i].source+'</span><span class="news-item-time">'+ago+'</span></span>'
+      +'</a>';
+  }
+  feed.innerHTML=html;
+}
+
+function filterNews(filter,el){
+  currentFilter=filter;
+  document.querySelectorAll('.news-tab').forEach(function(t){t.classList.remove('active');});
+  el.classList.add('active');
+  if(allHorologyNews.length>0)renderNews();
+}
+
+// ── Auto-load feeds on page open ──
+setTimeout(loadRolex, 1500);
+setTimeout(loadHorologyNews, 2500);
+
+// ── Visible Visitor Counter ──
+setTimeout(function(){
+  var paths=['%2Fgot-the-call%2F','%2Fgot-the-call','%2F'];
+  var tried=0;
+  function tryPath(){
+    if(tried>=paths.length){document.getElementById('visitor-count').textContent='\u2022 welcome';return;}
+    var r=new XMLHttpRequest();
+    r.addEventListener('load',function(){
+      try{
+        var data=JSON.parse(r.responseText);
+        var count=data.count||'0';
+        document.getElementById('visitor-count').textContent='\u2022 '+count+' visitors';
+      }catch(e){tried++;tryPath();}
+    });
+    r.onerror=function(){tried++;tryPath();};
+    r.open('GET','https://bilalaman.goatcounter.com/counter/'+paths[tried]+'.json');
+    r.send();
+  }
+  tryPath();
+},3000);
+</script>
+
+<script data-goatcounter="https://bilalaman.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
