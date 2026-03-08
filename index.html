@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Got The Call | Watch Humor & Culture</title>
+<meta name="description" content="Watch humor, horology culture, and the AD experience — told through memes, market takes, and real talk. 14M+ reel views. Follow @got_the_call.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --deep: #111111;
+    --card: #161616;
+    --card-hover: #1c1c1c;
+    --gold: #c9a96e;
+    --gold-light: #dfc08a;
+    --gold-dim: rgba(201, 169, 110, 0.15);
+    --cream: #f2ece0;
+    --cream-dim: rgba(242, 236, 224, 0.7);
+    --muted: #6b6b6b;
+    --border: rgba(255,255,255,0.06);
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--black);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Grain overlay ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Utility ── */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+  
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Fade-in animations ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px 40px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── Watch Logo ── */
+  .watch-logo-wrap {
+    position: relative;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeDown 1.2s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .watch-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(201,169,110,0.2) 0%, rgba(201,169,110,0.05) 40%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+
+  .watch-logo-wrap svg {
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 4px 24px rgba(201,169,110,0.2));
+  }
+
+  .hero-title {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(26px, 7vw, 40px);
+    letter-spacing: 14px;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeUp 1s 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1s 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--cream-dim);
+    max-width: 440px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gold);
+    color: var(--black);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-cta:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201, 169, 110, 0.25);
+  }
+
+  .hero-cta svg { transition: transform 0.3s ease; }
+  .hero-cta:hover svg { transform: translateX(3px); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 1s 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 0;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    gap: 20px;
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Section styling ── */
+  section { padding: 50px 0; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 38px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 28px;
+  }
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .pillar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 32px 20px;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pillar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  .pillar:hover { 
+    background: var(--card-hover);
+    transform: translateY(-4px);
+  }
+  .pillar:hover::before { transform: scaleX(1); }
+
+  .pillar-emoji { font-size: 28px; margin-bottom: 14px; display: block; }
+
+  .pillar-title {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: var(--cream);
+  }
+
+  /* ── Most Watched ── */
+  .reel-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .reel-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    transition: all 0.35s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reel-card::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    transform: scaleY(0);
+    transition: transform 0.35s ease;
+  }
+
+  .reel-card:hover {
+    background: var(--card-hover);
+    border-color: rgba(201,169,110,0.15);
+    transform: translateX(4px);
+  }
+
+  .reel-card:hover::after { transform: scaleY(1); }
+
+  .reel-rank {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: rgba(201, 169, 110, 0.2);
+    width: 36px;
+    text-align: center;
+  }
+
+  .reel-info { min-width: 0; }
+
+  .reel-title {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--cream);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .reel-views {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  .reel-arrow {
+    color: var(--muted);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .reel-card:hover .reel-arrow {
+    color: var(--gold);
+    transform: translateX(3px);
+  }
+
+  /* ── Feed preview ── */
+  .feed-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .feed-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 24px 20px;
+    transition: all 0.35s ease;
+  }
+
+  .feed-item:hover {
+    background: var(--card-hover);
+    transform: translateY(-2px);
+  }
+
+  .feed-emoji {
+    font-size: 22px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .feed-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--cream-dim);
+  }
+
+  .feed-text strong {
+    color: var(--cream);
+    font-weight: 600;
+  }
+
+  /* ── Bottom CTA ── */
+  .bottom-cta {
+    text-align: center;
+    padding: 50px 24px 40px;
+    position: relative;
+  }
+
+  .bottom-cta::before {
+    content: '';
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(201,169,110,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-number {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 10vw, 72px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .cta-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .cta-phrase {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream-dim);
+    margin-bottom: 28px;
+    line-height: 1.4;
+  }
+
+  .btn-follow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-follow:hover {
+    background: var(--gold);
+    color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201, 169, 110, 0.2);
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 28px 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Divider ── */
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 28px;
+    opacity: 0.4;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 600px) {
+    .pillars { grid-template-columns: 1fr; gap: 10px; }
+    .pillar { padding: 24px 20px; display: flex; align-items: center; gap: 14px; text-align: left; }
+    .pillar-emoji { margin-bottom: 0; font-size: 24px; }
+    .feed-grid { grid-template-columns: 1fr; }
+    .reel-card { grid-template-columns: 1fr auto; gap: 12px; padding: 16px 20px; }
+    .reel-rank { display: none; }
+    .stats-grid { gap: 10px; }
+    section { padding: 40px 0; }
+    .hero { padding: 40px 24px 30px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+
+  <!-- Watch Logo -->
+  <div class="watch-logo-wrap">
+    <div class="watch-glow"></div>
+    <svg width="140" height="140" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Gold case/bezel -->
+      <circle cx="100" cy="100" r="92" fill="none" stroke="#c9a96e" stroke-width="6"/>
+      <circle cx="100" cy="100" r="86" fill="none" stroke="#b8944f" stroke-width="2"/>
+      <!-- Crown (winding knob) -->
+      <rect x="186" y="92" width="14" height="16" rx="3" fill="#c9a96e"/>
+      <!-- Green dial -->
+      <circle cx="100" cy="100" r="82" fill="#1a6b3c"/>
+      <!-- Inner dial ring -->
+      <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(201,169,110,0.15)" stroke-width="0.5"/>
+      <!-- Hour indices -->
+      <!-- 12 -->
+      <rect x="97" y="24" width="6" height="16" rx="1" fill="#c9a96e"/>
+      <!-- 1 -->
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(30 100 100)"/>
+      <!-- 2 -->
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(60 100 100)"/>
+      <!-- 3 -->
+      <rect x="97" y="24" width="6" height="16" rx="1" fill="#c9a96e" transform="rotate(90 100 100)"/>
+      <!-- 4 -->
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(120 100 100)"/>
+      <!-- 5 -->
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(150 100 100)"/>
+      <!-- 6 -->
+      <rect x="97" y="24" width="6" height="16" rx="1" fill="#c9a96e" transform="rotate(180 100 100)"/>
+      <!-- 7 -->
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(210 100 100)"/>
+      <!-- 8 -->
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(240 100 100)"/>
+      <!-- 9 -->
+      <rect x="97" y="24" width="6" height="16" rx="1" fill="#c9a96e" transform="rotate(270 100 100)"/>
+      <!-- 10 -->
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(300 100 100)"/>
+      <!-- 11 -->
+      <rect x="97" y="24" width="4" height="10" rx="1" fill="#c9a96e" transform="rotate(330 100 100)"/>
+      <!-- Hour hand (pointing ~10:10) -->
+      <line x1="100" y1="100" x2="72" y2="52" stroke="#f2ece0" stroke-width="5" stroke-linecap="round"/>
+      <!-- Minute hand (pointing ~10:10) -->
+      <line x1="100" y1="100" x2="130" y2="48" stroke="#f2ece0" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- Center dot -->
+      <circle cx="100" cy="100" r="5" fill="#c9a96e"/>
+      <circle cx="100" cy="100" r="2.5" fill="#f2ece0"/>
+    </svg>
+  </div>
+
+  <h1 class="hero-title">Got The Call</h1>
+  <div class="hero-eyebrow">Rolex · Timepieces · Horology</div>
+  <div class="hero-tagline">Watch Humor & Horology Culture</div>
+  <p class="hero-sub">The anticipation, the AD relationship, and the feeling when your phone finally rings — told through memes, humor, and real talk.</p>
+  <a href="https://www.instagram.com/got_the_call/" target="_blank" class="hero-cta">
+    Follow @got_the_call
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-bar reveal">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-number">14M+</div>
+        <div class="stat-label">Reel Views</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">400K+</div>
+        <div class="stat-label">Monthly Reach</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">9K+</div>
+        <div class="stat-label">Community</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHY FOLLOW ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="section-label">Why People Follow</div>
+    <div class="section-title">Three reasons your<br>feed needs this.</div>
+    <div class="pillars">
+      <div class="pillar">
+        <span class="pillar-emoji">😂</span>
+        <span class="pillar-title">Watch Humor</span>
+      </div>
+      <div class="pillar">
+        <span class="pillar-emoji">🤯</span>
+        <span class="pillar-title">Market Takes</span>
+      </div>
+      <div class="pillar">
+        <span class="pillar-emoji">🫡</span>
+        <span class="pillar-title">AD Culture</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MOST WATCHED ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="section-label">Most Watched</div>
+    <div class="section-title">The reels that broke<br>the algorithm.</div>
+    <div class="reel-list">
+      <a href="https://www.instagram.com/reel/DHaPwZwOcdE/?igsh=Ymg4cng0bDI4MXZt" target="_blank" class="reel-card">
+        <div class="reel-rank">1</div>
+        <div class="reel-info">
+          <div class="reel-title">People Who Bought the Hulk for 30K in 2021</div>
+          <div class="reel-views">8.5M views</div>
+        </div>
+        <svg class="reel-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+      <a href="https://www.instagram.com/reel/C6BjKLuOy2q/?igsh=MXJwcnB6NjFtcHo5eg==" target="_blank" class="reel-card">
+        <div class="reel-rank">2</div>
+        <div class="reel-info">
+          <div class="reel-title">Rolex Will Be in Stock — Watch Market is Dead</div>
+          <div class="reel-views">2.4M views</div>
+        </div>
+        <svg class="reel-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+      <a href="https://www.instagram.com/reel/DEIFW-yOK4j/?igsh=Y3VoenZ0NXVyYXho" target="_blank" class="reel-card">
+        <div class="reel-rank">3</div>
+        <div class="reel-info">
+          <div class="reel-title">POV: Passing Business Class Wearing a Sub to Economy</div>
+          <div class="reel-views">1.9M views</div>
+        </div>
+        <svg class="reel-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+      <a href="https://www.instagram.com/reel/DEGnceCuA1_/?igsh=Mm12YjUweHF3enAy" target="_blank" class="reel-card">
+        <div class="reel-rank">4</div>
+        <div class="reel-info">
+          <div class="reel-title">They Laughed When I Asked for a Pepsi</div>
+          <div class="reel-views">1.9M views</div>
+        </div>
+        <svg class="reel-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ IN YOUR FEED ═══ -->
+<section class="reveal">
+  <div class="container">
+    <div class="section-label">What to Expect</div>
+    <div class="section-title">What you'll see<br>in your feed.</div>
+    <div class="feed-grid">
+      <div class="feed-item">
+        <span class="feed-emoji">🗣️</span>
+        <div class="feed-text"><strong>POV memes</strong> every watch person relates to</div>
+      </div>
+      <div class="feed-item">
+        <span class="feed-emoji">📊</span>
+        <div class="feed-text"><strong>Market hot takes</strong> on prices & new releases</div>
+      </div>
+      <div class="feed-item">
+        <span class="feed-emoji">🏪</span>
+        <div class="feed-text"><strong>AD relationship</strong> humor & real talk</div>
+      </div>
+      <div class="feed-item">
+        <span class="feed-emoji">🦁</span>
+        <div class="feed-text"><strong>"Men With…"</strong> series — viral watch stereotypes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOTTOM CTA ═══ -->
+<section class="bottom-cta reveal">
+  <div class="container">
+    <div class="cta-number">9,000+</div>
+    <div class="cta-label">Watch Enthusiasts Who Get It</div>
+    <div class="divider"></div>
+    <div class="cta-phrase">Your AD won't call you,<br>but we will.</div>
+    <a href="https://www.instagram.com/got_the_call/" target="_blank" class="btn-follow">
+      Follow on Instagram
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-text">Got The Call © 2026</div>
+</footer>
+
+<script>
+// Scroll-triggered reveal animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      // Stagger children if they exist
+      const children = entry.target.querySelectorAll('.pillar, .reel-card, .feed-item, .stat');
+      if (children.length > 0) {
+        children.forEach((child, j) => {
+          child.style.opacity = '0';
+          child.style.transform = 'translateY(20px)';
+          child.style.transition = `opacity 0.6s ${j * 0.1}s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s ${j * 0.1}s cubic-bezier(0.16, 1, 0.3, 1)`;
+          setTimeout(() => {
+            child.style.opacity = '1';
+            child.style.transform = 'translateY(0)';
+          }, 50);
+        });
+      }
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<script data-goatcounter="https://bilalaman.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
